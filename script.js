@@ -6,28 +6,55 @@ const db = getDatabase();
 const tableBody = document.querySelector("#rdvTable tbody");
 const countRemaining = document.getElementById("countRemaining");
 const btnAdd = document.getElementById("btnAdd");
+const loginCard = document.getElementById("loginCard");
+const medContent = document.getElementById("medContent");
+const mdpInput = document.getElementById("mdpMedecin");
+const btnLogin = document.getElementById("btnLogin");
+const loginError = document.getElementById("loginError");
+
+// --- Mot de passe médecin ---
+const MOT_DE_PASSE = "docteur123";
+
+// --- Vérification login ---
+function checkLogin() {
+  if (localStorage.getItem("medecinLogged") === "true") {
+    loginCard.style.display = "none";
+    medContent.style.display = "block";
+  }
+}
+checkLogin();
+
+btnLogin.addEventListener("click", () => {
+  const mdp = mdpInput.value.trim();
+  if (mdp === MOT_DE_PASSE) {
+    localStorage.setItem("medecinLogged", "true");
+    loginCard.style.display = "none";
+    medContent.style.display = "block";
+  } else {
+    loginError.textContent = "Mot de passe incorrect.";
+  }
+});
 
 // --- Ajouter un rendez-vous ---
 btnAdd.addEventListener("click", () => {
   const nom = document.getElementById("nomAdd").value.trim();
   const tel = document.getElementById("telAdd").value.trim();
-  const date = document.getElementById("dateAdd").value.trim();
-  if (!nom || !tel || !date) {
+  if (!nom || !tel) {
     alert("Veuillez remplir tous les champs.");
     return;
   }
 
-  const newRef = ref(db, "rendezvous");
-  push(newRef, {
-    nom,
-    tel,
-    date,
-    numero: Date.now() // numéro unique
-  });
+  const rdvRef = ref(db, "rendezvous");
+  onValue(rdvRef, (snapshot) => {
+    const total = snapshot.exists() ? Object.keys(snapshot.val()).length : 0;
+    const numero = total + 1;
+    const date = new Date().toLocaleDateString("fr-FR");
+    push(rdvRef, { nom, tel, numero, date });
+    updateRemaining();
+  }, { onlyOnce: true });
 
   document.getElementById("nomAdd").value = "";
   document.getElementById("telAdd").value = "";
-  document.getElementById("dateAdd").value = "";
 });
 
 // --- Charger la liste des rendez-vous ---
@@ -40,13 +67,13 @@ function chargerRendezVous() {
       Object.entries(data).forEach(([id, rdv], i) => {
         const row = document.createElement("tr");
         row.innerHTML = `
-          <td>${i + 1}</td>
+          <td>${rdv.numero}</td>
           <td>${rdv.nom || "-"}</td>
           <td>${rdv.tel || "-"}</td>
           <td>${rdv.date || "-"}</td>
           <td>
             <button class="btnDone"><i class="fas fa-check"></i></button>
-            <button class="btnDelete" style="background:#dc3545;"><i class="fas fa-trash"></i></button>
+            <button class="btnDelete"><i class="fas fa-trash"></i></button>
           </td>
         `;
         // Bouton "terminé"
@@ -69,10 +96,8 @@ function chargerRendezVous() {
 function updateRemaining() {
   const total = document.querySelectorAll("#rdvTable tbody tr").length;
   const done = document.querySelectorAll("#rdvTable tbody tr.done").length;
-  countRemaining.textContent = total - done;
+  countRemaining.textContent = `Patients restants: ${total - done}`;
 }
 
 // --- Initialisation ---
 chargerRendezVous();
-
-
