@@ -47,10 +47,10 @@ btnAdd.addEventListener("click", () => {
   const rdvRef = ref(db, "rendezvous");
   onValue(rdvRef, (snapshot) => {
     const total = snapshot.exists() ? Object.keys(snapshot.val()).length : 0;
-    const numero = total + 1;
-    const date = new Date().toLocaleDateString("fr-FR");
+    const numero = total + 1; // Calcul du numéro de rendez-vous
+    const date = new Date().toLocaleDateString("fr-FR"); // Utilisation de la date actuelle
     push(rdvRef, { nom, tel, numero, date });
-    updateRemaining();
+    updateRemaining(); // Mise à jour du nombre de patients restants
   }, { onlyOnce: true });
 
   document.getElementById("nomAdd").value = "";
