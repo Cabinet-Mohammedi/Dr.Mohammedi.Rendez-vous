@@ -1,4 +1,3 @@
-/* --- القاعدة العامة --- */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -13,11 +12,9 @@ body {
   flex-direction: column;
   min-height: 100vh;
   align-items: center;
-  justify-content: flex-start;
   padding: 10px;
 }
 
-/* --- الرأس --- */
 header {
   background: #007bff;
   color: white;
@@ -29,7 +26,6 @@ header {
   border-radius: 10px;
 }
 
-/* --- البطاقات --- */
 .card {
   background: white;
   border-radius: 12px;
@@ -41,14 +37,12 @@ header {
   text-align: center;
 }
 
-/* --- العناوين --- */
 h3 {
   margin-bottom: 12px;
   font-size: 1.3rem;
   color: #007bff;
 }
 
-/* --- الحقول --- */
 input {
   width: 100%;
   padding: 12px;
@@ -58,7 +52,6 @@ input {
   font-size: 16px;
 }
 
-/* --- الأزرار --- */
 button {
   width: 100%;
   padding: 12px;
@@ -71,7 +64,6 @@ button {
   transition: 0.3s;
 }
 
-/* ألوان الأزرار */
 button#btnAdd, .btnDone {
   background-color: #28a745;
   color: white;
@@ -90,7 +82,6 @@ button#btnAdd:hover, .btnDone:hover {
   background-color: #b02a37;
 }
 
-/* --- الجدول --- */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -111,7 +102,6 @@ tr.done {
   text-decoration: line-through;
 }
 
-/* --- عداد المرضى المتبقين --- */
 #countRemaining {
   font-size: 1.2rem;
   font-weight: bold;
@@ -119,7 +109,6 @@ tr.done {
   margin-bottom: 10px;
 }
 
-/* --- الروابط في الفوتر --- */
 footer a {
   text-decoration: none;
   color: #007bff;
@@ -130,28 +119,11 @@ footer a:hover {
   text-decoration: underline;
 }
 
-/* --- تصميم متجاوب للهاتف --- */
+/* --- Mobile friendly --- */
 @media (max-width: 500px) {
-  header {
-    font-size: 1.3rem;
-    padding: 0.8rem 0;
-  }
-  h3 {
-    font-size: 1.1rem;
-  }
-  input, button {
-    font-size: 14px;
-    padding: 10px;
-  }
-  th, td {
-    font-size: 12px;
-    padding: 6px;
-  }
-  .card {
-    padding: 1rem;
-    margin: 0.8rem 0;
-  }
+  header { font-size: 1.3rem; padding: 0.8rem 0; }
+  h3 { font-size: 1.1rem; }
+  input, button { font-size: 14px; padding: 10px; }
+  th, td { font-size: 12px; padding: 6px; }
+  .card { padding: 1rem; margin: 0.8rem 0; }
 }
-
-
-
